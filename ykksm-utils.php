@@ -45,12 +45,7 @@ function modhex2hex($m)
 
 function aes128ecb_decrypt($key,$in)
 {
-  $td = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'ecb', '');
-  $iv = yubi_hex2bin('00000000000000000000000000000000');
-  mcrypt_generic_init($td, yubi_hex2bin($key), $iv);
-  $result = bin2hex(mdecrypt_generic($td, yubi_hex2bin($in)));
-  mcrypt_generic_deinit($td);
-
+  $result = bin2hex(openssl_decrypt( yubi_hex2bin($in), 'AES-128-ECB', yubi_hex2bin($key), OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING));
   return $result;
 }
 	
