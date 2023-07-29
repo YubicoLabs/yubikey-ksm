@@ -57,6 +57,9 @@ $use_oci = substr($db_dsn,0,3) === 'oci';
 if (!$use_oci) {
   try {
     $dbh = new PDO($db_dsn, $db_username, $db_password, $db_options);
+    # Force column names to be lower case. Otherwise Firebird will not
+    # work because all access happens with lower case constants.
+    $dbh->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER);
    } catch (PDOException $e) {
     syslog(LOG_ERR, "Database error: " . $e->getMessage());
     die("ERR Database error\n");
